@@ -1,4 +1,7 @@
 class GamesController < ApplicationController
+  # before_action runs the given method (:set_game) before EVERY action in this controller.
+  # BUT, the "only" parameter specifies certain actions to run before.
+  # You could also use "except" with certain actions to do the opposite.
   before_action :set_game, only: [:show, :edit, :update, :destroy]
 
   # GET /games
@@ -9,10 +12,20 @@ class GamesController < ApplicationController
 
   # GET /games/1
   # GET /games/1.json
+  # Why is this empty?!?!?!?!??!?!?!?!?
+  # The `show` action only does one thing: it grabs a single Game and returns it.
+  # The `before_action` method we have above runs before `show`,
+  # so it's basically as if the method looked like this:
+  #
+  # def show
+  #   @game = Game.find(params[:id])
+  # end
+  #
   def show
   end
 
   # GET /games/new
+  # Note that `before_action` isn't called here
   def new
     @game = Game.new
   end
@@ -63,6 +76,7 @@ class GamesController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    # `set_game` looks through the request params and grabs the corresponding Game from the :id
     def set_game
       @game = Game.find(params[:id])
     end
